@@ -1,6 +1,6 @@
 var Services = {
-	adjustOrder: require('./adjustOrder'),
-	Totals: require('./Totals')
+  adjustOrder: require('./adjustOrder'),
+  Totals: require('./Totals')
 };
 
 module.exports = Services;

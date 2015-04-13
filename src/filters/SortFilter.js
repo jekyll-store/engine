@@ -1,9 +1,9 @@
 function SortFilter(field, direction) {
   var fn = function(display) {
-  	var products = display.get('products');
+    var products = display.get('products');
 
     products = products.sort(function(a, b) {
-    	return a.get(field).cmp(b.get(field));
+      return a.get(field).cmp(b.get(field));
     });
 
     if(direction == SortFilter.DESC) { products = products.reverse(); }

@@ -9,8 +9,8 @@ var DisplayStore = Reflux.createStore({
   mixins: [listenAndMix(require('./ProductsStore'), 'update')],
   getInitialState: function() { return t.filterDisplay(); },
   onSetDisplayFilter: function(args) {
-  	t.filters = t.filters.set(args.name, args.filter);
-  	t.update();
+    t.filters = t.filters.set(args.name, args.filter);
+    t.update();
   },
   onRemoveDisplayFilter: function(args) {
     t.filters = t.filters.remove(args.name);

@@ -1,6 +1,6 @@
 function SearchFilter(field, word) {
   return function(display) {
-  	var products = display.get('products');
+    var products = display.get('products');
 
     products = products.filter(function(product) {
       return product.get(field).match(new RegExp(word, 'i'));

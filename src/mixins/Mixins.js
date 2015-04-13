@@ -1,5 +1,5 @@
 var Mixins = {
-	listenAndMix: require('./listenAndMix')
+  listenAndMix: require('./listenAndMix')
 };
 
 module.exports = Mixins;

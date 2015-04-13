@@ -6,7 +6,7 @@ var rewire = require('rewire');
 var loadJSON = rewire('../../src/utils/loadJSON');
 
 describe('loadJSON', function() {
-	var superAgent = {
+  var superAgent = {
     get: sinon.stub().returnsThis(),
     set: function() { return this; }
   };
@@ -17,8 +17,8 @@ describe('loadJSON', function() {
     var json = [{ name: 'pingu', height: 0.85 }];
     superAgent.end = function(cb) { cb(null, { body: json }); };
 
-  	loadJSON('/penguins.json', callback);
-  	assert(superAgent.get.calledWith('/penguins.json'));
+    loadJSON('/penguins.json', callback);
+    assert(superAgent.get.calledWith('/penguins.json'));
     assert(callback.calledWith(json));
   });
 

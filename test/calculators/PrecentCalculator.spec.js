@@ -7,7 +7,7 @@ var PercentCalculator = require('../../src/calculators/PercentCalculator');
 
 describe('PercentCalculator', function() {
   it('calculates', function() {
-  	var order = I.fromJS({ totals: { price: B(23.35) } });
+    var order = I.fromJS({ totals: { price: B(23.35) } });
     var calc = PercentCalculator({ field: 'price', percent: B(25.24) });
     assert(calc(order).eq(B(5.89354)));
   });
