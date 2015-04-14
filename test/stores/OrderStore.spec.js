@@ -74,7 +74,7 @@ describe('OrderStore', function() {
   });
 
   it('forwards purchase errors', function() {
-    end.callsArgWith(0, { body: 'Internal server error.' });
+    end.callsArgWith(0, { response: { body: { message: 'Internal server error.' } } });
     OrderStore.onPurchase(form);
     assert(result().order.get('errors').equals(I.List(['Internal server error.'])));
   });
