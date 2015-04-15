@@ -11,7 +11,7 @@ Example output:
   country: Immutable.Map({
     iso: 'AD',
     name: 'Andorra',
-    zones: Immutable.Set([International, Europe])
+    zones: Immutable.Set(['International', 'Europe'])
   })
 }
 ```

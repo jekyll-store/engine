@@ -73,7 +73,7 @@ For more information, consult the [Calculators reference page](/docs/calculators
 
 ## Tokenizers
 
-Tokenizers are interfaces with payment gateway providers, that use their API's to swap dangerous card details for a safe token that represent those cards. Not all payment gateways provide these API's. The following is a list of currently implemented tokenizers:
+Tokenizers are interfaces with payment gateway providers, that use their API's to swap dangerous card details for a safe token that represents those cards. Not all payment gateways provide these API's. The following is a list of currently implemented tokenizers:
 
 * [Paymill](https://www.paymill.com/)
 
