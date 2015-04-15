@@ -9,8 +9,6 @@
     "chai": "^2.1.2",
     "immutable": "^3.6.4",
     "mocha": "^2.2.1",
-    "react": "^0.13.1",
-    "reactify": "^1.1.0",
     "reflux": "^0.2.7",
     "rewire": "^2.3.1",
     "sinon": "^1.14.1",
@@ -20,8 +18,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "browserify -t reactify -s JekyllStoreEngine ./src/JekyllStoreEngine.js | uglifyjs -c -m > ./dist/JekyllStoreEngine.js",
-    "watch": "watchify -t reactify -s JekyllStoreEngine ./src/JekyllStoreEngine.js -o ../front/assets/_js/JekyllStoreEngine.js -v"
+    "build": "browserify -s JekyllStoreEngine ./src/JekyllStoreEngine.js | uglifyjs -c -m > ./dist/JekyllStoreEngine.js",
+    "watch": "watchify -s JekyllStoreEngine ./src/JekyllStoreEngine.js -o ../front/assets/_js/JekyllStoreEngine.js -v"
   },
   "author": "Max White",
   "license": "ISC"

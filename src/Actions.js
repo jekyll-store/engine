@@ -3,17 +3,17 @@ var Reflux = require('reflux');
 var Actions = Reflux.createActions([
   'setItem',
   'removeItem',
+  'setAddress',
   'setDelivery',
   'setDisplayFilter',
   'removeDisplayFilter',
-  'setAddress',
-  'setPaymentOptions',
   'loadProducts',
   'loadCountries',
   'loadDeliveryMethods',
-  'refreshCheckout',
+  'setPaymentOptions',
   'purchase',
   'completed',
+  'refreshCheckout'
 ]);
 
 Actions.setItem.shouldEmit = function(args) { return args.quantity >= 0; };
