@@ -77,15 +77,6 @@ Tokenizers are interfaces with payment gateway providers, that use their API's t
 
 * [Paymill](https://www.paymill.com/)
 
-## Vendor
-
-As Jekyll-Store Engine uses browserify to package all the modules together for distribution, the vendored dependancies are explicitly attached to `JekyllStoreEngine.Vendor` object. The following is a list of vendored tools:
-
-* Big - [Big.js](http://mikemcl.github.io/big.js/)
-* Immutable - [Immutable.js](https://github.com/facebook/immutable-js)
-* Reflux - [RefluxJS](https://github.com/spoike/refluxjs)
-* SuperAgent - [SuperAgent](https://github.com/visionmedia/superagent)
-
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/engine/fork )

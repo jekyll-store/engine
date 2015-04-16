@@ -1,25 +1,26 @@
 {
   "name": "JekyllStoreEngine",
-  "main": "./dist/JekyllStoreEngine.js",
+  "main": "./src/JekyllStoreEngine.js",
   "version": "0.0.1",
-  "description": "",
-  "devDependencies": {
+  "description": "Static ecommerce business logic written with Reflux.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jekyll-store/engine.git"
+  },
+  "dependencies": {
     "big.js": "^3.0.1",
-    "browserify": "^9.0.3",
-    "chai": "^2.1.2",
     "immutable": "^3.6.4",
-    "mocha": "^2.2.1",
     "reflux": "^0.2.7",
+    "superagent": "^1.1.0"
+  },
+  "devDependencies": {
+    "chai": "^2.1.2",
+    "mocha": "^2.2.1",
     "rewire": "^2.3.1",
-    "sinon": "^1.14.1",
-    "superagent": "^1.1.0",
-    "uglify-js": "^2.4.19",
-    "watchify": "^3.1.0"
+    "sinon": "^1.14.1"
   },
   "scripts": {
-    "test": "mocha",
-    "build": "browserify -s JekyllStoreEngine ./src/JekyllStoreEngine.js | uglifyjs -c -m > ./dist/JekyllStoreEngine.js",
-    "watch": "watchify -s JekyllStoreEngine ./src/JekyllStoreEngine.js -o ../front/assets/_js/JekyllStoreEngine.js -v"
+    "test": "mocha"
   },
   "author": "Max White",
   "license": "ISC"
