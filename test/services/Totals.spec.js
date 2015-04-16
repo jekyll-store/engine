@@ -12,8 +12,8 @@ describe('Totals', function() {
 
   it('calculates totals for filled basket', function() {
     var basket = I.fromJS({
-      'ball': { name: 'ball', price: B(2.14), weight: B(245), quantity: 1 },
-      'bat': { name: 'bat', price: B(1.23), weight: B(367), quantity: 2 }
+      'ball': { name: 'ball', price: B(2.14), weight: B(245), quantity: B(1) },
+      'bat': { name: 'bat', price: B(1.23), weight: B(367), quantity: B(2) }
     });
 
     var expected = I.Map({ price: B(4.6), weight: B(979) });
@@ -22,8 +22,8 @@ describe('Totals', function() {
 
   it('it ignores missing values', function() {
     var basket = I.fromJS({
-      'ball': { name: 'ball', price: B(2.14), quantity: 1 },
-      'bat': { name: 'bat', price: B(1.23), quantity: 2 }
+      'ball': { name: 'ball', price: B(2.14), quantity: B(1) },
+      'bat': { name: 'bat', price: B(1.23), quantity: B(2) }
     });
 
     var expected = I.Map({ price: B(4.6), weight: B(0) });

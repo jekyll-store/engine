@@ -11,7 +11,7 @@ describe('OrderStore', function() {
   function result() { return OrderStore.trigger.lastCall.args[0]; }
 
   OrderStore.basket = I.fromJS({
-    'bag': { name: 'bag', quantity: 1, price: B(5.30), weight: B(1500) }
+    'bag': { name: 'bag', quantity: B(1), price: B(5.30), weight: B(1500) }
   });
 
   before(function() {
@@ -58,7 +58,7 @@ describe('OrderStore', function() {
 
   it('processes a successful purchase correctly', function() {
     var expectedJSON = {
-      basket: { 'bag': 1 },
+      basket: { 'bag': '1' },
       address: form.address,
       delivery: 'Second Class',
       token: 'FHRFDG4523DF3',

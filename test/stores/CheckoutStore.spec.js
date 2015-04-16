@@ -27,8 +27,8 @@ describe('CheckoutStore', function() {
 
   it('runs basket through checkout', function() {
     CheckoutStore.basket = I.fromJS({
-      'ball': { name: 'ball', price: B(2.14), weight: B(245), quantity: 1 },
-      'bat': { name: 'bat', price: B(1.23), weight: B(367), quantity: 2 }
+      'ball': { name: 'ball', price: B(2.14), weight: B(245), quantity: B(1) },
+      'bat': { name: 'bat', price: B(1.23), weight: B(367), quantity: B(2) }
     });
 
     var expected = I.fromJS({

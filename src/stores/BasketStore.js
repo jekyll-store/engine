@@ -1,6 +1,7 @@
 // Includes
 var Reflux = require('reflux');
 var I = require('immutable');
+var B = require('big.js');
 var listenAndMix = require('../mixins/listenAndMix');
 
 var BasketStore = Reflux.createStore({
@@ -20,7 +21,7 @@ var BasketStore = Reflux.createStore({
 
   onSetItem: function(args) {
     var product = t.basket.get(args.name) || t.products.get(args.name);
-    t.basket = t.basket.set(args.name, product.set('quantity', args.quantity));
+    t.basket = t.basket.set(args.name, product.set('quantity', B(args.quantity)));
     t.update();
   },
 

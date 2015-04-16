@@ -35,7 +35,7 @@ describe('BasketStore', function() {
     BasketStore.onSetItem({ name: 'bag', quantity: 5 });
 
     var expected = I.fromJS({
-      'bag': { name: 'bag', price: B(2.45), quantity: 5 }
+      'bag': { name: 'bag', price: B(2.45), quantity: B(5) }
     });
 
     assert(result().basket.equals(expected));
@@ -50,8 +50,8 @@ describe('BasketStore', function() {
     BasketStore.onSetItem({ name: 'shoes', quantity: 1 });
 
     var expected = I.fromJS({
-      'bag': { name: 'bag', price: B(2.45), quantity: 5 },
-      'shoes': { name: 'shoes', price: B(4.32), quantity: 1 },
+      'bag': { name: 'bag', price: B(2.45), quantity: B(5) },
+      'shoes': { name: 'shoes', price: B(4.32), quantity: B(1) },
     });
 
     assert(result().basket.equals(expected));
@@ -62,7 +62,7 @@ describe('BasketStore', function() {
     BasketStore.onRemoveItem({ name: 'bag' });
 
     var expected = I.fromJS({
-      'shoes': { name: 'shoes', price: B(4.32), quantity: 1 }
+      'shoes': { name: 'shoes', price: B(4.32), quantity: B(1) }
     });
 
     assert(result().basket.equals(expected));
