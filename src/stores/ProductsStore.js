@@ -6,16 +6,19 @@ var Walker = require('../utils/Walker');
 var ProductsStore = Reflux.createStore({
   // Public
   listenables: [require('../Actions')],
-  getInitialState: function() { return { products: I.Map() }; },
+  getInitialState: function() { return { products: t.products }; },
   onLoadProducts: function(args) {
-    var products = I.Map();
+    t.products = I.Map();
 
     args.products.forEach(function(product) {
-      products = products.set(product.name, I.fromJS(Walker.toBig(product)));
+      t.products = t.products.set(product.name, I.fromJS(Walker.toBig(product)));
     });
 
-    this.trigger({ products: products });
-  }
+    t.trigger({ products: t.products });
+  },
+
+  //Private
+  products: I.Map()
 });
 
-module.exports = ProductsStore;
+var t = module.exports = ProductsStore;

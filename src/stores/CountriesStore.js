@@ -5,20 +5,23 @@ var I = require('immutable');
 var CountriesStore = Reflux.createStore({
   // Public
   listenables: [require('../Actions')],
-  getInitialState: function() { return { countries: I.Map() }; },
+  getInitialState: function() { return { countries: t.countries }; },
   onLoadCountries: function(args) {
-    var countries = I.Map();
+    t.countries = I.Map();
 
     args.countries.forEach(function(country) {
-      countries = countries.set(country.iso, I.Map({
+      t.countries = t.countries.set(country.iso, I.Map({
         iso: country.iso,
         name: country.name,
         zones: I.Set(country.zones)
       }));
     });
 
-    this.trigger({ countries: countries });
-  }
+    t.trigger({ countries: t.countries });
+  },
+
+  // Private
+  countries: I.Map()
 });
 
-module.exports = CountriesStore;
+var t = module.exports = CountriesStore;

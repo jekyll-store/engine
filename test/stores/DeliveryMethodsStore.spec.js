@@ -56,7 +56,7 @@ describe('DeliveryMethodsStore', function() {
     };
 
     DeliveryMethodsStore.onLoadDeliveryMethods(input);
-    assert(result().toString(), expected.toString());
+    assert(result().methods.toString(), expected.methods.toString());
   });
 
   it('sets country and only passes on available methods', function() {
@@ -80,7 +80,7 @@ describe('DeliveryMethodsStore', function() {
     };
 
     DeliveryMethodsStore.update();
-    assert(result().toString(), expected.toString());
+    assert(result().methods.toString(), expected.methods.toString());
   });
 
   it('passes on nothing if country not set', function() {
