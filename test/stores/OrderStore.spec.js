@@ -36,9 +36,11 @@ describe('OrderStore', function() {
   OrderStore.request = { post: post, send: send, end: end };
 
   var form = {
-    address: {
+    customer: {
       name: 'Jimmy Chu',
       email: 'jjc@example.com',
+    },
+    address: {
       address1: '45 Avenbury Rd',
       city: 'Rochester',
       county: 'Kent',
@@ -59,6 +61,7 @@ describe('OrderStore', function() {
   it('processes a successful purchase correctly', function() {
     var expectedJSON = {
       basket: { 'bag': '1' },
+      customer: form.customer,
       address: form.address,
       delivery: 'Second Class',
       token: 'FHRFDG4523DF3',

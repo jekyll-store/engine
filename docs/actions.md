@@ -194,9 +194,11 @@ Example:
 
 ```javascript
 JekyllStoreEngine.Actions.purchase({
-  address: {
+  cutomer: {
     name: 'Frank Abagnale',
-    email: 'frankieSaysChilax@example.com',
+    email: 'frankieSaysChilax@example.com'
+  },
+  address: {
     address1: '45 Bloomsfield Crescent',
     city: 'Agloe',
     state: 'New York',

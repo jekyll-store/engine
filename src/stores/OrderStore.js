@@ -50,6 +50,7 @@ var OrderStore = Reflux.createStore({
   payload: function(form, token) {
     return {
       basket: t.minimalBasket().toJSON(),
+      customer: form.get('customer').toJSON(),
       address: form.get('address').toJSON(),
       delivery: t.order.get('delivery'),
       token: token,
