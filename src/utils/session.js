@@ -1,7 +1,7 @@
 // Includes
 var Walker = require('./Walker');
 
-var session = {
+var Session = {
   // Public
   set: function(k, v) {
     if(t.safe) {
@@ -20,4 +20,4 @@ var session = {
   safe: typeof(sessionStorage) !== "undefined"
 };
 
-var t = module.exports = session;
+var t = module.exports = Session;

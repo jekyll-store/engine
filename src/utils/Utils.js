@@ -1,6 +1,5 @@
 var Utils = {
-  loadJSON: require('./loadJSON'),
-  session: require('./session'),
+  session: require('./Session'),
   Walker: require('./Walker')
 };
 

@@ -30,7 +30,7 @@ var BasketStore = Reflux.createStore({
   },
 
   //Private
-  session: require('../utils/session'),
+  session: require('../utils/Session'),
   update: function() {
     t.session.set('basket', t.basket.toJS());
     t.trigger({ basket: t.basket });
