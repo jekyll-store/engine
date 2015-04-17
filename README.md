@@ -10,6 +10,8 @@ Jekyll-Store is a lightweight, backend-free ecommerce solution that is easy to d
 
 # Engine
 
+[![Build Status](https://travis-ci.org/jekyll-store/engine.svg?branch=master)](https://travis-ci.org/jekyll-store/engine)
+
 Even though Jekyll-Store Engine was written with Jekyll and the Jekyll-Store solution in mind, it is decoupled from most implementation specifics and could just as easily serve the basis of any static-site ecommerce solution. It also has been written such that most of the code is reachable from the main `JekyllStoreEngine` object to enable extensibility.
 
 ## Actions
