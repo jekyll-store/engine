@@ -9,7 +9,7 @@ var DeliveryMethodsStore = Reflux.createStore({
   // Public
   listenables: [require('../Actions')],
   mixins: [listenAndMix(require('./AddressStore'), 'update')],
-  getInitialState: function() { return { methods: t.methods }; },
+  getInitialState: function() { return { methods: t.available }; },
   onLoadDeliveryMethods: function(args) {
     t.methods = I.Map();
 
@@ -26,12 +26,13 @@ var DeliveryMethodsStore = Reflux.createStore({
 
   //Private
   methods: I.Map(),
+  available: I.Map(),
   update: function() {
     var zones = t.country.get('zones') || I.Set();
-    var available = t.methods.filter(function(method) {
+    t.available = t.methods.filter(function(method) {
       return !zones.intersect(method.get('zones')).isEmpty();
     });
-    t.trigger({ methods: available });
+    t.trigger({ methods: t.available });
   }
 });
 

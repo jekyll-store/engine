@@ -10,11 +10,15 @@ describe('DeliveryMethodsStore', function() {
   sinon.spy(DeliveryMethodsStore, 'trigger');
   function result() { return DeliveryMethodsStore.trigger.lastCall.args[0]; }
 
-  DeliveryMethodsStore.country = I.fromJS({
-    name: 'The Crownlands',
-    zones: I.Set(['Central', 'West']),
-    iso: 'CR'
+  before(function() {
+    DeliveryMethodsStore.country = I.fromJS({
+      name: 'The Crownlands',
+      zones: I.Set(['Central', 'West']),
+      iso: 'CR'
+    });
   });
+
+  var expected;
 
   it('sets methods and creates calculators', function() {
     var input = {
@@ -37,7 +41,7 @@ describe('DeliveryMethodsStore', function() {
       ]
     };
 
-    var expected = {
+    expected = {
       methods: I.Map({
         'Express': I.Map({
           name: 'Express',
@@ -56,7 +60,7 @@ describe('DeliveryMethodsStore', function() {
     };
 
     DeliveryMethodsStore.onLoadDeliveryMethods(input);
-    assert(result().methods.toString(), expected.methods.toString());
+    assert.equal(result().methods.toString(), expected.methods.toString());
   });
 
   it('sets country and only passes on available methods', function() {
@@ -66,7 +70,7 @@ describe('DeliveryMethodsStore', function() {
       iso: 'DN'
     });
 
-    var expected = {
+    expected = {
       methods: I.Map({
         'Tracked': I.Map({
           name: 'Tracked',
@@ -80,7 +84,12 @@ describe('DeliveryMethodsStore', function() {
     };
 
     DeliveryMethodsStore.update();
-    assert(result().methods.toString(), expected.methods.toString());
+    assert.equal(result().methods.toString(), expected.methods.toString());
+  });
+
+  it('responds correctly to getInitialState after country set', function() {
+    var state = DeliveryMethodsStore.getInitialState();
+    assert.equal(state.methods.toString(), expected.methods.toString());
   });
 
   it('passes on nothing if country not set', function() {
