@@ -6,18 +6,18 @@ var Session = {
   set: function(k, v) {
     if(t.safe) {
       var serialized = JSON.stringify(Walker.fromBig(v));
-      sessionStorage.setItem(k, serialized);
+      localStorage.setItem(k, serialized);
     }
   },
   get: function(k) {
     if(t.safe) {
-      var value = sessionStorage.getItem(k);
+      var value = localStorage.getItem(k);
       return Walker.toBig(JSON.parse(value));
     }
   },
 
   // Private
-  safe: typeof(sessionStorage) !== "undefined"
+  safe: typeof(localStorage) !== "undefined"
 };
 
 var t = module.exports = Session;
