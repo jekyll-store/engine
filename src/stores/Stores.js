@@ -5,7 +5,6 @@ var Stores = {
   Countries: require('./CountriesStore'),
   DeliveryMethods: require('./DeliveryMethodsStore'),
   Delivery: require('./DeliveryStore'),
-  Display: require('./DisplayStore'),
   Order: require('./OrderStore'),
   PaymentOptions: require('./PaymentOptionsStore'),
   Products: require('./ProductsStore')

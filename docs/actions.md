@@ -59,38 +59,6 @@ Example:
 JekyllStoreEngine.Actions.setDelivery({ name: 'Express 24' });
 ```
 
-## setDisplayFilter
-
-Sets the display filter associated with a name.
-
-Args:
-
-* `name` - Name to associate filter.
-* `filter` - Function that filters products in a display.
-
-Example:
-
-```javascript
-JekyllStoreEngine.Actions.setDisplayFilter({
-  name: 'page',
-  filter: JekyllStoreEngine.Filters.Page(6, 2)
-});
-```
-
-## removeDisplayFilter
-
-Removes the display filter associated with a name.
-
-Args:
-
-* `name` - The filter's associated name.
-
-Example:
-
-```javascript
-JekyllStoreEngine.Actions.removeDisplayFilter({ name: 'page' });
-```
-
 ## loadProducts
 
 Loads products. If any products are missing a name, or if any name is not unique, the action is ignored with a warning.

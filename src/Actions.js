@@ -5,8 +5,6 @@ var Actions = Reflux.createActions([
   'removeItem',
   'setAddress',
   'setDelivery',
-  'setDisplayFilter',
-  'removeDisplayFilter',
   'loadProducts',
   'loadCountries',
   'loadDeliveryMethods',

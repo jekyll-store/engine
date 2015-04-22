@@ -12,8 +12,6 @@ As with all [Flux](https://github.com/facebook/flux) architectures, interaction 
 * `removeItem` - Removes an item from the basket.
 * `setAddress` - Sets the address, specifically the country.
 * `setDelivery` - Sets the delivery method to be used to deliver the order.
-* `setDisplayFilter` - Sets a function to filter the displayed products.
-* `removeDisplayFilter` - Removes a display filter.
 * `loadProducts` - Loads products.
 * `loadCountries` - Loads countries.
 * `loadDeliveryMethods` - Loads delivery methods.
@@ -33,25 +31,12 @@ Stores are to be considered the absolute source of truth for the data they trigg
 * `CountriesStore` - The list of all countries.
 * `DeliveryMethodsStore` - The available delivery methods for the current address.
 * `DeliveryStore` - The currently selected delivery method and it's associated cost.
-* `DisplayStore` - The products to be displayed after filters have been applied.
 * `OrderStore` - The current state of the order with totals, adjustments and errors.
 * `PaymentOptionsStore` - The payment options.
 * `ProductsStore` - The list of all products.
 * `CheckoutStore` - (Used internally).
 
 For more information, consult the [Stores reference page](/docs/stores.md).
-
-## Filters
-
-Filters are simple functions that filter the products in a display. They have an associated precedence to make sure they are run in the correct order. The following is a list of the filters:
-
-* `PageFilter` - Paginates the display at the specified page number.
-* `RangesFilter` - Allows products with a field within the supplied ranges.
-* `SearchFilter` - Allows products with a field that contains the searched text.
-* `SortFilter` - Sorts products on a field in the specified direction.
-* `TagsFilter` - Allows products with a field that matches one of the supplied tags.
-
-For more information, consult the [Filters reference page](/docs/stores.md).
 
 ## Calculators
 
@@ -68,6 +53,12 @@ For more information, consult the [Calculators reference page](/docs/calculators
 Tokenizers are interfaces with payment gateway providers, that use their API's to swap dangerous card details for a safe token that represents those cards. Not all payment gateways provide these API's. The following is a list of currently implemented tokenizers:
 
 * [Paymill](https://www.paymill.com/)
+
+## Plugins
+
+The following plugins are made to be used with Jekyll-Store Engine:
+
+* [Display](https://github.com/jekyll-store/display)
 
 ## Contributing
 
