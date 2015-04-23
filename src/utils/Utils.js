@@ -1,5 +1,5 @@
 var Utils = {
-  session: require('./Session'),
+  Session: require('./Session'),
   Walker: require('./Walker')
 };
 
