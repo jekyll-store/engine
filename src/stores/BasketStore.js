@@ -3,16 +3,15 @@ var Reflux = require('reflux');
 var I = require('immutable');
 var B = require('big.js');
 var listenAndMix = require('../mixins/listenAndMix');
+var keptInStorage = require('../mixins/keptInStorage');
 
 var BasketStore = Reflux.createStore({
   // Public
   listenables: [ require('../Actions') ],
-  mixins: [listenAndMix(require('./ProductsStore'))],
-  getInitialState: function() { return { basket: t.basket }; },
-
-  init: function() {
-    this.basket = I.fromJS(this.session.get('basket')) || I.Map();
-  },
+  mixins: [
+    listenAndMix(require('./ProductsStore')),
+    keptInStorage('basket', I.Map)
+  ],
 
   onRemoveItem: function(args) {
     t.basket = t.basket.remove(args.name);
@@ -27,13 +26,6 @@ var BasketStore = Reflux.createStore({
 
   onCompleted: function() {
     t.session.set('basket', {});
-  },
-
-  //Private
-  session: require('../utils/Session'),
-  update: function() {
-    t.session.set('basket', t.basket.toJS());
-    t.trigger({ basket: t.basket });
   }
 });
 
