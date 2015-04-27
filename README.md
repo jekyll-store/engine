@@ -59,6 +59,8 @@ Tokenizers are interfaces with payment gateway providers, that use their API's t
 The following plugins are made to be used with Jekyll-Store Engine:
 
 * [Display](https://github.com/jekyll-store/display)
+* [Favourites](https://github.com/jekyll-store/favourites)
+* [Visited](https://github.com/jekyll-store/visited)
 
 ## Contributing
 
