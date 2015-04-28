@@ -34,8 +34,9 @@ var OrderStore = Reflux.createStore({
     t.request
       .post(t.paymentOptions.get('hook'))
       .send(t.payload(form, token))
-      .end(function(error) {
-        error ? t.updateWithError(t.parseError(error)) : Actions.completed();
+      .end(function(error, response) {
+        error ? t.updateWithError(t.parseError(error)) :
+                Actions.completed(response.body);
       });
   },
 
