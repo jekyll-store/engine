@@ -30,9 +30,11 @@ describe('OrderStore', function() {
     currency: 'GBP'
   });
 
+  var success = { body: { number: '28475EUF839' } };
+
   var post = sinon.stub().returnsThis();
   var send = sinon.stub().returnsThis();
-  var end = sinon.stub().callsArgWith(0, null);
+  var end = sinon.stub().callsArgWith(0, null, success);
   OrderStore.request = { post: post, send: send, end: end };
 
   var form = {
@@ -73,7 +75,7 @@ describe('OrderStore', function() {
     assert(tokenizer.calledWithMatch(I.Map(form.card), '780'));
     assert(post.calledWith('https://my-payments-server.com/'));
     assert(send.calledWith(expectedJSON));
-    assert(completed.called);
+    assert(completed.calledWith(success.body));
   });
 
   it('forwards purchase errors', function() {
