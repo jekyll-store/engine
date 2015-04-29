@@ -60,6 +60,7 @@ The following plugins are made to be used with Jekyll-Store Engine:
 
 * [Display](https://github.com/jekyll-store/display)
 * [Favourites](https://github.com/jekyll-store/favourites)
+* [Google-Analytics](https://github.com/jekyll-store/google-analytics)
 * [Visited](https://github.com/jekyll-store/visited)
 
 ## Contributing
