@@ -1,4 +1,4 @@
-# Jekll-Store/Engine
+# Jekyll-Store/Engine
 
 [![Build Status](https://travis-ci.org/jekyll-store/engine.svg?branch=master)](https://travis-ci.org/jekyll-store/engine)
 
