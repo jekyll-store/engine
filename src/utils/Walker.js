@@ -19,7 +19,9 @@ var Walker = {
 
   fromBig: function(obj) {
     return this.walk(obj, function(a) {
-      if(a instanceof B) { return +a.toString(); }
+      if(a.constructor && a.constructor.name && a.constructor.name == 'Big') {
+        return +a;
+      }
     });
   }
 }
