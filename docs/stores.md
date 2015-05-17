@@ -8,10 +8,10 @@ Example output:
 
 ```javascript
 {
-  country: Immutable.Map({
+  country: Immutable({
     iso: 'AD',
     name: 'Andorra',
-    zones: Immutable.Set(['International', 'Europe'])
+    zones: ['International', 'Europe']
   })
 }
 ```
@@ -24,9 +24,9 @@ Example output:
 
 ```javascript
 {
-  basket: Immutable.Map({
-    'bag': Immutable.Map({ name: 'bag', price: Big(2.45), quantity: Big(3) }),
-    'shoe': Immutable.Map({ name: 'shoe', price: Big(14.89), quantity: Big(1) })
+  basket: Immutable({
+    'bag': { name: 'bag', price: 2.45, quantity: 3 }),
+    'shoe': { name: 'shoe', price: 14.89, quantity: 1 })
   })
 }
 ```
@@ -39,26 +39,10 @@ Example output:
 
 ```javascript
 {
-  countries: Immutable.Map({
-
-    'KH': Immutable.Map({
-      iso: 'KH',
-      name: 'Cambodia',
-      zones: Immutable.Set(['Shipping'])
-    }),
-
-    'AT': Immutable.Map({
-      iso: 'AT',
-      name: 'Austria',
-      zones: Immutable.Set(['Shipping'])
-    }),
-
-    'GU': Immutable.Map({
-      iso: 'GU',
-      name: 'Guam',
-      zones: Immutable.Set(['Domestic']
-     })
-
+  countries: Immutable({
+    'KH': { iso: 'KH', name: 'Cambodia', zones: ['Shipping'] },
+    'AT': { iso: 'AT', name: 'Austria', zones: ['Shipping'] },
+    'GU': { iso: 'GU', name: 'Guam', zones: ['Domestic'] }
   })
 }
 ```
@@ -71,20 +55,9 @@ Example output:
 
 ```javascript
 {
-  methods: Immutable.Map({
-
-    'Express': Immutable.Map({
-      name: 'Express',
-      zones: Immutable.Set(['Domestic']),
-      calculator: [function]
-    }),
-
-    'Tracked': Immutable.Map({
-      name: 'Tracked',
-      zones: Immutable.Set(['Domestic', 'Shipping']),
-      calculator: [function]
-    })
-
+  methods: Immutable({
+    'Express': { name: 'Express', zones: ['Domestic'], calculator: [function] },
+    'Tracked': { name: 'Tracked', zones: ['Domestic', 'Shipping'], calculator: [function] }
   })
 }
 ```
@@ -97,7 +70,7 @@ Example output:
 
 ```javascript
 {
-  delivery: Immutable.Map({ name: 'Express', amount: Big(5.48) })
+  delivery: Immutable({ name: 'Express', amount: 5.48 })
 }
 ```
 
@@ -109,17 +82,11 @@ Example output:
 
 ```javascript
 {
-  order: Immutable.Map({
-    totals: Immutable.Map({
-      price: Big(5.30),
-      weight: Big(1500),
-      order: Big(7.80)
-    }),
+  order: Immutable({
+    totals: { price: 5.30, weight: 1500, order: 7.80 },
     delivery: 'Second Class',
-    errors: Immutable.List(['Card is no longer valid or has expired']),
-    adjustments: Immutable.List([
-      Immutable.Map({ label: 'Second Class', amount: B(2.50) })
-    ])
+    errors: ['Card is no longer valid or has expired'],
+    adjustments: [{ label: 'Second Class', amount: B(2.50) }]
   })
 }
 ```
@@ -132,7 +99,7 @@ Example output:
 
 ```javascript
 {
-  paymentOptions: I.Map({
+  paymentOptions: Immutable({
     tokenizer: [function],
     currency: 'USD',
     hook: 'http://my-payments-server.com/purchase'
@@ -149,11 +116,11 @@ Example output:
 
 ```javascript
 {
-  products: Immutable.List([
-    Immutable.Map({ name: 'Crocs', price: Big(88.00) }),
-    Immutable.Map({ name: 'Sandals', price: Big(5.25) }),
-    Immutable.Map({ name: 'Slippers', price: Big(45.50) })
-  ])
+  products: Immutable({
+    'Crocs': { name: 'Crocs', price: 88.00 },
+    'Sandals': { name: 'Sandals', price: 5.25 },
+    'Slippers': { name: 'Slippers', price: 45.50 }
+  })
 }
 ```
 

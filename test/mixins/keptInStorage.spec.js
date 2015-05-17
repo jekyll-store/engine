@@ -1,40 +1,36 @@
 var assert = require('chai').assert;
 var sinon = require('sinon');
-var I = require('immutable');
+var I = require('seamless-immutable');
 var Reflux = require('reflux');
-
 var keptInStorage = require('../../src/mixins/keptInStorage');
 
 describe('keptInStorage', function() {
   var AssasinsStore = Reflux.createStore({
-    mixins: [keptInStorage('assasins', I.List)]
+    mixins: [keptInStorage('assasins', [])]
   });
 
-  sinon.spy(AssasinsStore, 'trigger');
-  function result() { return AssasinsStore.trigger.lastCall.args[0]; }
-
-  var session = AssasinsStore.session = { set: sinon.spy() };
-  function saved() { return session.set.lastCall.args[1]; }
-
   it('is empty initially if not in session', function() {
-    assert(AssasinsStore.getInitialState().assasins.equals(I.List()));
+    assert.deepEqual(AssasinsStore.getInitialState(), { assasins: I([]) });
   });
 
   it('retreives initial from session if in session', function() {
-    var savedAssasins = [
-      { name: 'Dave', weapon: 'knife' },
-      { name: 'Terry', weapon: 'candlestick' },
-    ];
-    session.get = function() { return savedAssasins; };
-    var expected = I.fromJS(savedAssasins);
+    var assasins = [{ name: 'Dave' }, { name: 'Terry' }];
+    AssasinsStore.session.get = function() { return assasins; };
+
     AssasinsStore.init();
-    assert(AssasinsStore.getInitialState().assasins.equals(expected));
+
+    var expected = { assasins: I(assasins) };
+    assert.deepEqual(AssasinsStore.getInitialState(), expected);
   });
 
   it('updates', function() {
-    AssasinsStore.assasins = I.fromJS([{ name: 'George', weapon: 'surprise' }]);
+    var trigger = AssasinsStore.trigger = sinon.spy();
+    var set = AssasinsStore.session.set = sinon.spy();
+    var assasins = AssasinsStore.assasins = I([{ name: 'George' }]);
+
     AssasinsStore.update();
-    assert(result().assasins.equals(AssasinsStore.assasins));
-    assert.deepEqual(saved(), AssasinsStore.assasins.toJS());
+
+    assert(trigger.calledWith({ assasins: assasins }));
+    assert(set.calledWith('assasins', assasins));
   });
 });

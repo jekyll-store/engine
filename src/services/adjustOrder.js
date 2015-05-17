@@ -1,14 +1,11 @@
-// Includes
-var I = require('immutable');
+var I = require('seamless-immutable');
+var B = require('big.js');
 
 function adjustOrder(order, label, amount) {
-  var adjustment = I.Map({label: label, amount: amount });
-  order = order.set('adjustments', order.get('adjustments').push(adjustment));
-
-  var total = order.getIn(['totals', 'order']).plus(amount);
-  order = order.setIn(['totals', 'order'], total);
-
-  return order;
+  var adjustments = order.adjustments.concat({ label: label, amount: amount })
+  var total = +B(order.totals.order).plus(amount);
+  var totals = order.totals.merge({ order: total });
+  return order.merge({ adjustments: adjustments, totals: totals });
 }
 
 module.exports = adjustOrder;

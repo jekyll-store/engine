@@ -1,19 +1,11 @@
 function PaymillTokenizer(args) {
+  var paymill = args.paymill ? args.paymill : window.paymill;
+
   return function(card, amountInCents, cb) {
-    var params = {
-      number: card.get('number'),
-      exp_month: card.get('month'),
-      exp_year: card.get('year'),
-      cvc: card.get('cvc'),
-      amount_int: amountInCents,
-      currency: args.currency
-    };
-
-    var parseResponse = function(error, response) {
+    var params = card.merge({ amount_int: amountInCents, currency: args.currency });
+    paymill.createToken(params, function(error, response) {
       error ? cb(parseError(error)) : cb(null, response.token);
-    };
-
-    paymill.createToken(params, parseResponse);
+    });
   };
 }
 

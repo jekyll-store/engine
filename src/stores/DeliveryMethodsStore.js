@@ -1,9 +1,9 @@
 // Includes
 var Reflux = require('reflux');
-var I = require('immutable');
-var Walker = require('../utils/Walker');
+var I = require('seamless-immutable');
 var listenAndMix = require('../mixins/listenAndMix');
-var Calculators = require('../calculators/Calculators');
+var m = require('../Utils').mapping;
+var intersects = require('../Utils').intersects;
 
 var DeliveryMethodsStore = Reflux.createStore({
   // Public
@@ -11,13 +11,11 @@ var DeliveryMethodsStore = Reflux.createStore({
   mixins: [listenAndMix(require('./AddressStore'), 'update')],
   getInitialState: function() { return { methods: t.available }; },
   onLoadDeliveryMethods: function(args) {
-    t.methods = I.Map();
-
     args.methods.forEach(function(method) {
-      t.methods = t.methods.set(method.name, I.Map({
+      t.methods = t.methods.merge(m(method.name, {
         name: method.name,
-        zones: I.Set(method.zones),
-        calculator: Calculators[method.calculator](Walker.toBig(method.args))
+        zones: method.zones,
+        calculator: t.calculators[method.calculator](method.args)
       }));
     });
 
@@ -25,13 +23,20 @@ var DeliveryMethodsStore = Reflux.createStore({
   },
 
   //Private
-  methods: I.Map(),
-  available: I.Map(),
+  methods: I({}),
+  available: I({}),
+  calculators: require('../calculators/Calculators'),
   update: function() {
-    var zones = t.country.get('zones') || I.Set();
-    t.available = t.methods.filter(function(method) {
-      return !zones.intersect(method.get('zones')).isEmpty();
-    });
+    var zones = t.country.zones || [];
+    t.available = {};
+
+    for(var name in t.methods) {
+      if(intersects(t.methods[name].zones, zones)) {
+        t.available[name] = t.methods[name];
+      }
+    }
+
+    t.available = I(t.available);
     t.trigger({ methods: t.available });
   }
 });

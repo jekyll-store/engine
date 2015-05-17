@@ -1,12 +1,12 @@
 // Includes
 var Reflux = require('reflux');
-var I = require('immutable');
+var I = require('seamless-immutable');
 var listenAndMix = require('../mixins/listenAndMix');
 var Totals = require('../services/Totals');
 
 var CheckoutStore = Reflux.createStore({
   // Public
-  listenables: [ require('../Actions') ],
+  listenables: [require('../Actions')],
   adjustors: [require('./DeliveryStore')],
   mixins: [listenAndMix(require('./BasketStore'), 'update')],
   getInitialState: function() { return t.checkout(); },
@@ -14,19 +14,17 @@ var CheckoutStore = Reflux.createStore({
 
   // Private
   update: function() { t.trigger(t.checkout()); },
+
   checkout: function() {
     var order = t.newOrder();
-
-    t.adjustors.forEach(function(adjustor) {
-      order = adjustor.adjust(order);
-    });
-
+    t.adjustors.forEach(function(adjustor) { order = adjustor.adjust(order); });
     return { order: order };
   },
+
   newOrder: function() {
     var totals = Totals.accumulate(t.basket);
-    totals = totals.set('order', totals.get('price'));
-    return I.Map({ adjustments: I.List(), errors: I.List(), totals: totals });
+    totals = totals.merge({ order: totals.price });
+    return I({ adjustments: [], errors: [], totals: totals });
   }
 });
 

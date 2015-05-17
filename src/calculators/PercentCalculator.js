@@ -1,8 +1,8 @@
+var B = require('big.js');
+
 function PercentCalculator(args) {
-  var ratio = args.percent.div(100);
-  return function(order) {
-    return order.getIn(['totals', args.field]).times(ratio);
-  };
+  var ratio = B(args.percent).div(100);
+  return function(order) { return +ratio.times(order.totals[args.field]); };
 }
 
 module.exports = PercentCalculator;

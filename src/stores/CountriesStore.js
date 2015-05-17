@@ -1,27 +1,11 @@
 // Includes
 var Reflux = require('reflux');
-var I = require('immutable');
+var resource = require('../mixins/resource');
 
 var CountriesStore = Reflux.createStore({
-  // Public
-  listenables: [require('../Actions')],
-  getInitialState: function() { return { countries: t.countries }; },
-  onLoadCountries: function(args) {
-    t.countries = I.Map();
-
-    args.countries.forEach(function(country) {
-      t.countries = t.countries.set(country.iso, I.Map({
-        iso: country.iso,
-        name: country.name,
-        zones: I.Set(country.zones)
-      }));
-    });
-
-    t.trigger({ countries: t.countries });
-  },
-
-  // Private
-  countries: I.Map()
+	// Public
+  mixins: [resource('countries')],
+  onLoadCountries: function(args) { this.toLookUp('iso', args); }
 });
 
 var t = module.exports = CountriesStore;

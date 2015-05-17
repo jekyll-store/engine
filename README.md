@@ -24,7 +24,7 @@ For more information, consult the [Actions reference page](/docs/actions.md).
 
 ## Stores
 
-Stores are to be considered the absolute source of truth for the data they trigger. For the most part, data is immutable, with structures using [Immutable.js](https://github.com/facebook/immutable-js)'s Map and List, and numbers using [Big.js](http://mikemcl.github.io/big.js/). As such, the triggered data cannot be changed by other listeners. The following is a list of the stores and what they publish:
+Stores are to be considered the absolute source of truth for the data they trigger. For the most part, data is immutable, using [seamless-immutable](https://github.com/rtfeldman/seamless-immutable) arrays and objects. As such, the triggered data cannot be changed by other listeners. The following is a list of the stores and what they publish:
 
 * `AddressStore` - The current address, specifically the country.
 * `BasketStore` - The items currently in the basket.

@@ -1,19 +1,17 @@
 var assert = require('chai').assert;
 var sinon = require('sinon');
-var I = require('immutable');
-var B = require('big.js');
-
+var I = require('seamless-immutable');
 var adjustOrder = require('../../src/services/adjustOrder');
 
 describe('adjustOrder', function() {
   it('creates an adjustment and adds to total', function() {
-    var order = I.fromJS({ totals: { order: B(34.50) }, adjustments: [] });
+    var order = I({ totals: { order: 34.50 }, adjustments: [] });
 
-    var expected = I.fromJS({
-      totals: { order: B(34.60) },
-      adjustments: [{ label: '10p Tax', amount: B(0.10) }]
+    var expected = I({
+    	totals: { order: 34.60 },
+    	adjustments: [{ label: '10p Tax', amount: 0.10 }]
     });
 
-    assert(adjustOrder(order, '10p Tax', B(0.10)).equals(expected));
+    assert.deepEqual(adjustOrder(order, '10p Tax', 0.10), expected);
   });
 });

@@ -1,12 +1,9 @@
 var assert = require('chai').assert;
 var sinon = require('sinon');
-var I = require('immutable');
 var Reflux = require('reflux');
-
 var listenAndMix = require('../../src/mixins/listenAndMix');
 
 describe('listenAndMix', function() {
-
   describe('listening to action', function() {
     var myAction = Reflux.createAction();
     var callback = sinon.stub();

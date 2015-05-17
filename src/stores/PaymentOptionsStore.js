@@ -1,24 +1,22 @@
 // Includes
 var Reflux = require('reflux');
-var I = require('immutable');
-var Tokenizers = require('../tokenizers/Tokenizers');
+var I = require('seamless-immutable');
+var resource = require('../mixins/resource');
 
 var PaymentOptionsStore = Reflux.createStore({
-  // Public
-  listenables: [require('../Actions')],
-  getInitialState: function() { return { paymentOptions: t.paymentOptions }; },
+	// Public
+  mixins: [resource('paymentOptions')],
   onSetPaymentOptions: function(args) {
-    t.paymentOptions = I.Map({
-      tokenizer: Tokenizers[args.tokenizer]({ currency: args.currency }),
+    t.paymentOptions = I({
+      hook: args.hook,
       currency: args.currency,
-      hook: args.hook
+      tokenizer: t.tokenizers[args.tokenizer]({ currency: args.currency })
     });
-
     t.trigger({ paymentOptions: t.paymentOptions });
   },
 
   // Private
-  paymentOptions: I.Map()
+  tokenizers: require('../tokenizers/Tokenizers')
 });
 
 var t = module.exports = PaymentOptionsStore;

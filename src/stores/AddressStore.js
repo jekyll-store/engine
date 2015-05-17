@@ -1,7 +1,8 @@
 // Includes
 var Reflux = require('reflux');
-var I = require('immutable');
+var I = require('seamless-immutable');
 var listenAndMix = require('../mixins/listenAndMix');
+var first = require('../Utils').first;
 
 var AddressStore = Reflux.createStore({
   // Public
@@ -14,9 +15,7 @@ var AddressStore = Reflux.createStore({
   // Private
   update: function() { t.trigger(t.address()); },
   address: function() {
-    return {
-      country: t.countries.get(t.country) || t.countries.first() || I.Map()
-    };
+    return { country: t.countries[t.country] || first(t.countries) || I({}) };
   }
 });
 

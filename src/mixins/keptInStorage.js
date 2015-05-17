@@ -1,23 +1,18 @@
-var I = require('immutable');
+// Includes
+var I = require('seamless-immutable');
+var m = require('../Utils').mapping;
 
-function keptInStorage(key, defaultType) {
+function keptInStorage(key, defaultValue) {
   return {
   	// Public
-    init: function() {
-    	this[key] = I.fromJS(this.session.get(key)) || defaultType();
-    },
-  	getInitialState: function() { return this.payload(); },
+    init: function() { this[key] = I(this.session.get(key) || defaultValue); },
+  	getInitialState: function() { return m(key, this[key]); },
 
     // Private
-  	session: require('../utils/Session'),
+  	session: require('../Utils').Session,
   	update: function() {
-	    this.session.set(key, this[key].toJS());
-	    this.trigger(this.payload());
-  	},
-  	payload: function() {
-	    var obj = {};
-	    obj[key] = this[key];
-  		return obj;
+	    this.session.set(key, this[key]);
+	    this.trigger(m(key, this[key]));
   	}
   };
 }

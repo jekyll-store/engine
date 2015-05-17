@@ -1,7 +1,7 @@
 {
   "name": "jekyll-store-engine",
   "main": "./src/JekyllStoreEngine.js",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Static ecommerce business logic written with Reflux.js",
   "repository": {
     "type": "git",
@@ -9,14 +9,13 @@
   },
   "dependencies": {
     "big.js": "^3.0.1",
-    "immutable": "^3.6.4",
     "reflux": "^0.2.7",
+    "seamless-immutable": "^2.3.2",
     "superagent": "^1.1.0"
   },
   "devDependencies": {
     "chai": "^2.1.2",
     "mocha": "^2.2.1",
-    "rewire": "^2.3.1",
     "sinon": "^1.14.1"
   },
   "scripts": {

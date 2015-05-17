@@ -1,5 +1,5 @@
 // Includes
-var I = require('immutable');
+var I = require('seamless-immutable');
 var B = require('big.js');
 
 var Totals = {
@@ -7,28 +7,20 @@ var Totals = {
   fields: ['price', 'weight'],
   accumulate: function(basket) {
     var totals = {};
-    t.initialize(totals);
 
-    basket.forEach(function(item) {
-      t.fields.forEach(function(field) {
-        t.addItem(totals, item, field);
-      });
+    t.fields.forEach(function(field) {
+      totals[field] = 0;
+
+      for(var name in basket) {
+        var item = basket[name];
+
+        if(item[field]) {
+          totals[field] = +B(item[field]).times(item.quantity).plus(totals[field]);
+        }
+      }
     });
 
-    return I.Map(totals);
-  },
-
-  // Private
-  initialize: function(totals) {
-    t.fields.forEach(function(field) { totals[field] = B(0); });
-  },
-
-  addItem: function(totals, item, field) {
-    var productValue = item.get(field);
-    if(productValue) {
-      var itemValue = productValue.times(item.get('quantity'));
-      totals[field] = totals[field].plus(itemValue);
-    }
+    return I(totals);
   }
 };
 

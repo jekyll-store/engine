@@ -1,46 +1,38 @@
 var assert = require('chai').assert;
 var sinon = require('sinon');
-var I = require('immutable');
-var B = require('big.js');
-var rewire = require('rewire');
-
-var CheckoutStore = rewire('../../src/stores/CheckoutStore');
+var I = require('seamless-immutable');
 var adjustOrder = require('../../src/services/adjustOrder');
+var s = require('../../src/stores/CheckoutStore');
 
 describe('CheckoutStore', function() {
-  sinon.spy(CheckoutStore, 'trigger');
-  function result() { return CheckoutStore.trigger.lastCall.args[0]; }
-
   var licenseAdjustor = {
-    adjust: function(order) {
-      return adjustOrder(order, 'License Fee', B(10));
-    }
+    adjust: function(order) { return adjustOrder(order, 'License Fee', 10); }
   };
 
   var vatAdjustor = {
-    adjust: function(order) {
-      return adjustOrder(order, 'VAT', B(5.60));
-    }
+    adjust: function(order) { return adjustOrder(order, 'VAT', 5.60); }
   };
 
-  CheckoutStore.adjustors = [licenseAdjustor, vatAdjustor];
+  var expected = I({
+    adjustments: [
+      { label: 'License Fee', amount: 10 },
+      { label: 'VAT', amount: 5.60 }
+    ],
+    errors: [],
+    totals: { price: 4.6, weight: 979, order: 20.20 }
+  });
+
+  before(function() {
+    s.trigger = sinon.spy();
+    s.adjustors = [licenseAdjustor, vatAdjustor];
+    s.basket = I({
+      'ball': { name: 'ball', price: 2.14, weight: 245, quantity: 1 },
+      'bat': { name: 'bat', price: 1.23, weight: 367, quantity: 2 }
+    });
+  });
 
   it('runs basket through checkout', function() {
-    CheckoutStore.basket = I.fromJS({
-      'ball': { name: 'ball', price: B(2.14), weight: B(245), quantity: B(1) },
-      'bat': { name: 'bat', price: B(1.23), weight: B(367), quantity: B(2) }
-    });
-
-    var expected = I.fromJS({
-      adjustments: [
-        { label: 'License Fee', amount: B(10) },
-        { label: 'VAT', amount: B(5.60) }
-      ],
-      errors: [],
-      totals: { price: B(4.6), weight: B(979), order: B(20.20) }
-    });
-
-    CheckoutStore.update();
-    assert(result().order.equals(expected));
+    s.update();
+    assert.deepEqual(s.trigger.args[0][0], { order: expected });
   });
 });

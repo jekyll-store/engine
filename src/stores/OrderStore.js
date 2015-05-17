@@ -1,6 +1,7 @@
 // Includes
 var Reflux = require('reflux');
-var I = require('immutable');
+var I = require('seamless-immutable');
+var B = require('big.js');
 var listenAndMix = require('../mixins/listenAndMix');
 var Actions = require('../Actions');
 
@@ -14,13 +15,12 @@ var OrderStore = Reflux.createStore({
   ],
   getInitialState: function() { return { order: t.order }; },
   onPurchase: function(form) {
-    if(!t.order.get('errors').isEmpty()) { return; }
+    if(t.order.errors.length > 0) { return; }
+    form = I(form);
 
-    form = I.fromJS(form);
-
-    var tokenizer     = t.paymentOptions.get('tokenizer'),
-        card          = form.get('card'),
-        amountInCents = t.order.getIn(['totals', 'order']).times(100).toFixed();
+    var tokenizer     = t.paymentOptions.tokenizer,
+        card          = form.card,
+        amountInCents = B(t.order.totals.order).times(100).toFixed();
 
     tokenizer(card, amountInCents, function(error, token) {
       error ? t.updateWithError(error) : t.triggerPurchaseHook(form, token);
@@ -28,15 +28,16 @@ var OrderStore = Reflux.createStore({
   },
 
   // Private
+  request: require('superagent'),
+  completed: Actions.completed,
   update: function() { t.trigger({ order: t.order }); },
 
   triggerPurchaseHook: function(form, token) {
     t.request
-      .post(t.paymentOptions.get('hook'))
+      .post(t.paymentOptions.hook)
       .send(t.payload(form, token))
       .end(function(error, response) {
-        error ? t.updateWithError(t.parseError(error)) :
-                Actions.completed(response.body);
+        error ? t.updateWithError(t.parseError(error)) : t.completed(response.body);
       });
   },
 
@@ -45,26 +46,26 @@ var OrderStore = Reflux.createStore({
   },
 
   updateWithError: function(error) {
-    t.trigger({ order: t.order.set('errors', I.List([error])) });
+    t.trigger({ order: t.order.merge({ errors: [error] }) });
   },
 
   payload: function(form, token) {
     return {
-      basket: t.minimalBasket().toJSON(),
-      customer: form.get('customer').toJSON(),
-      address: form.get('address').toJSON(),
-      delivery: t.order.get('delivery'),
+      basket: t.minimalBasket(),
+      customer: form.customer,
+      address: form.address,
+      delivery: t.order.delivery,
       token: token,
-      currency: t.paymentOptions.get('currency'),
-      total: t.order.getIn(['totals', 'order']).toString()
+      currency: t.paymentOptions.currency,
+      total: t.order.totals.order
     };
   },
 
   minimalBasket: function() {
-    return t.basket.map(function(item) { return item.get('quantity'); });
+    var minBask = {};
+    for(var name in t.basket) { minBask[name] = t.basket[name].quantity; }
+    return minBask;
   }
 });
-
-OrderStore.request = require('superagent');
 
 var t = module.exports = OrderStore;

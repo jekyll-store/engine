@@ -1,63 +1,43 @@
 var assert = require('chai').assert;
 var sinon = require('sinon');
-var I = require('immutable');
-var B = require('big.js');
-var rewire = require('rewire');
-
-var BasketStore = rewire('../../src/stores/BasketStore');
+var I = require('seamless-immutable');
+var s = require('../../src/stores/BasketStore');
 
 describe('BasketStore', function() {
-  sinon.spy(BasketStore, 'trigger');
-  function result() { return BasketStore.trigger.lastCall.args[0]; }
-
-  var session = BasketStore.session = { set: sinon.spy() };
-  function saved() { return session.set.lastCall.args[1]; }
-
-  BasketStore.products = I.fromJS({
-    'shoes': { name: 'shoes', price: B(4.32) },
-    'socks': { name: 'socks', price: B(1.23) }
-  });
-
-  BasketStore.basket = I.fromJS({
-    'bag': { name: 'bag', price: B(2.45), quantity: B(2) }
+  before(function() {
+    s.trigger = sinon.spy();
+    s.session.set = sinon.spy();
+    s.products = I({ 'shoes': { name: 'shoes' }, 'socks': { name: 'socks' } });
+    s.basket = I({ 'bag': { name: 'bag', quantity: 2 } });
   });
 
   it('sets items already in basket', function() {
-    BasketStore.onSetItem({ name: 'bag', quantity: 5 });
-
-    var expected = I.fromJS({
-      'bag': { name: 'bag', price: B(2.45), quantity: B(5) }
-    });
-
-    assert(result().basket.equals(expected));
-    assert.deepEqual(saved(), expected.toJS());
+    var expected = I({ 'bag': { name: 'bag', quantity: 5 } });
+    s.onSetItem({ name: 'bag', quantity: 5 });
+    assert.deepEqual(s.trigger.lastCall.args[0], { basket: expected });
+    assert.deepEqual(s.session.set.lastCall.args, ['basket', expected]);
   });
 
   it('sets items from products', function() {
-    BasketStore.onSetItem({ name: 'shoes', quantity: 1 });
-
-    var expected = I.fromJS({
-      'bag': { name: 'bag', price: B(2.45), quantity: B(5) },
-      'shoes': { name: 'shoes', price: B(4.32), quantity: B(1) },
+    var expected = I({
+      'bag': { name: 'bag', quantity: 5 },
+      'shoes': { name: 'shoes', quantity: 1 },
     });
 
-    assert(result().basket.equals(expected));
-    assert.deepEqual(saved(), expected.toJS());
+    s.onSetItem({ name: 'shoes', quantity: 1 });
+    assert.deepEqual(s.trigger.lastCall.args[0], { basket: expected });
+    assert.deepEqual(s.session.set.lastCall.args, ['basket', expected]);
   });
 
   it('removes items', function() {
-    BasketStore.onRemoveItem({ name: 'bag' });
-
-    var expected = I.fromJS({
-      'shoes': { name: 'shoes', price: B(4.32), quantity: B(1) }
-    });
-
-    assert(result().basket.equals(expected));
-    assert.deepEqual(saved(), expected.toJS());
+    var expected = I({ 'shoes': { name: 'shoes', quantity: 1 } });
+    s.onRemoveItem({ name: 'bag' });
+    assert.deepEqual(s.trigger.lastCall.args[0], { basket: expected });
+    assert.deepEqual(s.session.set.lastCall.args, ['basket', expected]);
   });
 
   it('clears items', function() {
-    BasketStore.onCompleted();
-    assert.deepEqual(saved(), {});
+    s.onCompleted();
+    assert.deepEqual(s.session.set.lastCall.args, ['basket', {}]);
   });
 });

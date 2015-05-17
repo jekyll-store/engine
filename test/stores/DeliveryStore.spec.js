@@ -1,88 +1,57 @@
 var assert = require('chai').assert;
 var sinon = require('sinon');
-var I = require('immutable');
-var B = require('big.js');
-var rewire = require('rewire');
-
-var DeliveryStore = rewire('../../src/stores/DeliveryStore');
+var I = require('seamless-immutable');
+var s = require('../../src/stores/DeliveryStore');
+var adjustOrder = require('../../src/services/adjustOrder');
 
 describe('DeliveryStore', function() {
-  sinon.spy(DeliveryStore, 'trigger');
-  function result() { return DeliveryStore.trigger.lastCall.args[0]; }
+  var order = I({ totals: { order: 13.28 }, errors: [], adjustments: [] });
 
   before(function() {
-    DeliveryStore.methods = I.Map({
-      'Standard': I.Map({ name: 'Standard', calculator: sinon.stub().returns(B(1.60)) }),
-      'Express': I.Map({ name: 'Express', calculator: sinon.stub().returns(B(3.40)) }),
-      'Limited': I.Map({ name: 'Limited', calculator: sinon.stub().returns(undefined) })
+    s.trigger = sinon.spy();
+    s.methods = I({
+      'Standard': { name: 'Standard', calculator: sinon.stub().returns(1.60) },
+      'Express': { name: 'Express', calculator: sinon.stub().returns(3.40) },
+      'Limited': { name: 'Limited', calculator: sinon.stub().returns(undefined) }
     });
   });
 
-  var order = I.fromJS({ totals: { order: B(13.28) }, errors: [], adjustments: [] });
-
   it('creates adjustment with first method by default', function() {
-    var expected = I.fromJS({
-      totals: { order: B(14.88) },
-      errors: [],
-      delivery: 'Standard',
-      adjustments: [{ label: 'Standard', amount: B(1.60) }]
-    });
-
-    assert(DeliveryStore.adjust(order).equals(expected));
-    assert(result().delivery.equals(I.Map({ name: 'Standard', amount: B(1.60) })));
+    var delivery = I({ name: 'Standard', amount: 1.60 });
+    var expected = adjustOrder(order, 'Standard', 1.60).merge({ delivery: 'Standard' });
+    assert.deepEqual(s.adjust(order), expected);
+    assert.deepEqual(s.trigger.args[0][0], { delivery: delivery });
   });
 
   it('creates adjustment with specified method', function() {
-    DeliveryStore.delivery = 'Express';
-
-    var expected = I.fromJS({
-      totals: { order: B(16.68) },
-      errors: [],
-      delivery: 'Express',
-      adjustments: [{ label: 'Express', amount: B(3.40) }]
-    });
-
-    assert(DeliveryStore.adjust(order).equals(expected));
-    assert(result().delivery.equals(I.Map({ name: 'Express', amount: B(3.40) })));
+    s.delivery = 'Express';
+    var delivery = I({ name: 'Express', amount: 3.40 });
+    var expected = adjustOrder(order, 'Express', 3.40).merge({ delivery: 'Express' });
+    assert.deepEqual(s.adjust(order), expected);
+    assert.deepEqual(s.trigger.args[1][0], { delivery: delivery });
   });
 
   it('raises error if selected method returns nothing', function() {
-    DeliveryStore.delivery = 'Limited';
-
-    var expected = I.fromJS({
-      totals: { order: B(13.28) },
-      adjustments: [],
-      errors: [DeliveryStore.Errors.NOT_APPLICABLE]
-    });
-
-    assert(DeliveryStore.adjust(order).equals(expected));
-    assert(result().delivery.equals(I.Map({ name: 'Limited', amount: undefined })));
+    s.delivery = 'Limited';
+    var delivery = I({ name: 'Limited', amount: undefined });
+    var expected = order.merge({ errors: [s.Errors.NOT_APPLICABLE] });
+    assert.deepEqual(s.adjust(order), expected);
+    assert.deepEqual(s.trigger.args[2][0], { delivery: delivery });
   });
 
   it('raises error if no methods available', function() {
-    DeliveryStore.methods = I.Map();
-
-    var expected = I.fromJS({
-      totals: { order: B(13.28) },
-      adjustments: [],
-      errors: [DeliveryStore.Errors.UNDELIVERABLE]
-    });
-
-    assert(DeliveryStore.adjust(order).equals(expected));
+    s.methods = I({});
+    var expected = order.merge({ errors: [s.Errors.UNDELIVERABLE] });
+    assert.deepEqual(s.adjust(order), expected);
   });
 
   it('adds errors to previous', function() {
-    order = order.set('errors', I.fromJS(['This item is a fashion disaster']));
+    order = order.merge({ errors: ['This item is a fashion disaster'] });
 
-    var expected = I.fromJS({
-      totals: { order: B(13.28) },
-      adjustments: [],
-      errors: [
-        'This item is a fashion disaster',
-        DeliveryStore.Errors.UNDELIVERABLE
-      ]
+    var expected = order.merge({
+      errors: ['This item is a fashion disaster', s.Errors.UNDELIVERABLE]
     });
 
-    assert(DeliveryStore.adjust(order).equals(expected));
+    assert.deepEqual(s.adjust(order), expected);
   });
 });

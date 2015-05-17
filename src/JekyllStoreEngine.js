@@ -5,5 +5,5 @@ module.exports = {
   Services:    require('./services/Services'),
   Stores:      require('./stores/Stores'),
   Tokenizers:  require('./tokenizers/Tokenizers'),
-  Utils:       require('./utils/Utils')
+  Utils:       require('./Utils')
 };

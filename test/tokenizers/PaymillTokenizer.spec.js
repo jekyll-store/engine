@@ -1,24 +1,26 @@
 var assert = require('chai').assert;
 var sinon = require('sinon');
-var I = require('immutable');
-var rewire = require('rewire');
-
-var PaymillTokenizer = rewire('../../src/tokenizers/PaymillTokenizer');
+var I = require('seamless-immutable');
+var PaymillTokenizer = require('../../src/tokenizers/PaymillTokenizer');
 
 describe('PaymillTokenizer', function() {
-  var callback = sinon.spy();
-  function result() { return callback.lastCall.args; }
+  var callback = sinon.spy(),
+      paymill  = {},
+      tokenizer;
 
-  var paymill = {};
-  PaymillTokenizer.__set__('paymill', paymill);
-
-  var tokenizer = PaymillTokenizer({ publicKey: 'jghktghvtvt', currency: 'GBP' });
-
-  var card = I.Map({
+  var card = I({
     number: '4111111111111111',
     month: '02',
     year: '2022',
     cvc: '123'
+  });
+
+  before(function() {
+    tokenizer = PaymillTokenizer({
+      publicKey: 'jghktghvtvt',
+      currency: 'GBP',
+      paymill: paymill
+    });
   });
 
   it('creates token', function() {
@@ -35,7 +37,7 @@ describe('PaymillTokenizer', function() {
     };
 
     tokenizer(card, '1520', callback);
-    assert.equal(result()[1], '098f6bcd4621d373cade4e832627b4f6');
+    assert.equal(callback.args[0][1], '098f6bcd4621d373cade4e832627b4f6');
   });
 
   it('handles errors', function() {
@@ -44,6 +46,6 @@ describe('PaymillTokenizer', function() {
     };
 
     tokenizer(card, '1520', callback);
-    assert.equal(result()[0], 'Communication with PSP failed');
+    assert.equal(callback.args[1][0], 'Communication with PSP failed');
   });
 });

@@ -1,6 +1,5 @@
 var assert = require('chai').assert;
 var sinon = require('sinon');
-var I = require('immutable');
 var Actions = require('../src/Actions');
 
 describe('Actions', function() {

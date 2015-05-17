@@ -1,39 +1,36 @@
 var assert = require('chai').assert;
 var sinon = require('sinon');
-var I = require('immutable');
-var rewire = require('rewire');
-
-var AddressStore = rewire('../../src/stores/AddressStore');
+var I = require('seamless-immutable');
+var s = require('../../src/stores/AddressStore');
 
 describe('AddressStore', function() {
-  sinon.spy(AddressStore, 'trigger');
-  function result() { return AddressStore.trigger.lastCall.args[0]; }
-
-  var countries = I.fromJS({
+  var countries = I({
     'KH': { name: 'Cambodia', zones: ['International', 'Asia'], iso: 'KH' },
     'AT': { name: 'Austria', zones: ['International', 'Europe'], iso: 'AT' },
     'GU': { name: 'Guam', zones: ['International', 'Oceanian'], iso: 'GU' }
   });
 
+  before(function() { s.trigger = sinon.spy(); });
+
   it('has empty address initially', function() {
-    assert(AddressStore.getInitialState().country.equals(I.Map()));
+    assert.deepEqual(s.getInitialState(), { country: {} });
   });
 
   it('defaults to first country when countries loaded', function() {
-    AddressStore.countries = countries;
-    AddressStore.update();
-    assert(result().country.equals(countries.get('KH')));
+    s.countries = countries;
+    s.update();
+    assert.deepEqual(s.trigger.lastCall.args[0], { country: countries['KH'] });
   });
 
   it('finds country when set', function() {
-    AddressStore.country = 'GU';
-    AddressStore.update();
-    assert(result().country.equals(countries.get('GU')));
+    s.country = 'GU';
+    s.update();
+    assert.deepEqual(s.trigger.lastCall.args[0], { country: countries['GU'] });
   });
 
   it('uses first country if iso not found', function() {
-    AddressStore.country = 'US';
-    AddressStore.update();
-    assert(result().country.equals(countries.get('KH')));
+    s.country = 'US';
+    s.update();
+    assert.deepEqual(s.trigger.lastCall.args[0], { country: countries['KH'] });
   });
 });
