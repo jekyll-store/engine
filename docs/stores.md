@@ -25,8 +25,8 @@ Example output:
 ```javascript
 {
   basket: Immutable({
-    'bag': { name: 'bag', price: 2.45, quantity: 3 }),
-    'shoe': { name: 'shoe', price: 14.89, quantity: 1 })
+    'bag': { name: 'bag', price: 2.45, quantity: 3 },
+    'shoe': { name: 'shoe', price: 14.89, quantity: 1 }
   })
 }
 ```
@@ -86,7 +86,7 @@ Example output:
     totals: { price: 5.30, weight: 1500, order: 7.80 },
     delivery: 'Second Class',
     errors: ['Card is no longer valid or has expired'],
-    adjustments: [{ label: 'Second Class', amount: B(2.50) }]
+    adjustments: [{ label: 'Second Class', amount: 2.50 }]
   })
 }
 ```
