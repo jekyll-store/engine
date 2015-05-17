@@ -17,12 +17,7 @@ var OrderStore = Reflux.createStore({
   onPurchase: function(form) {
     if(t.order.errors.length > 0) { return; }
     form = I(form);
-
-    var tokenizer     = t.paymentOptions.tokenizer,
-        card          = form.card,
-        amountInCents = B(t.order.totals.order).times(100).toFixed();
-
-    tokenizer(card, amountInCents, function(error, token) {
+    t.paymentOptions.tokenizer(form.card, t.intTotal(), function(error, token) {
       error ? t.updateWithError(error) : t.triggerPurchaseHook(form, token);
     });
   },
@@ -31,6 +26,7 @@ var OrderStore = Reflux.createStore({
   request: require('superagent'),
   completed: Actions.completed,
   update: function() { t.trigger({ order: t.order }); },
+  intTotal: function() { return B(t.order.totals.order).times(100).toFixed(); },
 
   triggerPurchaseHook: function(form, token) {
     t.request

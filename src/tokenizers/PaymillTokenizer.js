@@ -1,8 +1,8 @@
 function PaymillTokenizer(args) {
   var paymill = args.paymill ? args.paymill : window.paymill;
 
-  return function(card, amountInCents, cb) {
-    var params = card.merge({ amount_int: amountInCents, currency: args.currency });
+  return function(card, intTotal, cb) {
+    var params = card.merge({ amount_int: intTotal, currency: args.currency });
     paymill.createToken(params, function(error, response) {
       error ? cb(parseError(error)) : cb(null, response.token);
     });
