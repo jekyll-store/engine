@@ -16,12 +16,14 @@ var DeliveryStore = Reflux.createStore({
     UNDELIVERABLE: 'Unfortunately, we can not deliver to this address.',
     NOT_APPLICABLE: 'Delivery service is not available for your order.'
   },
+  getInitialState: function() { return { delivery: t.delivery }; },
   adjust: function(order) {
     var method = t.methods[t.delivery] || first(t.methods);
     if(!method) { return t.orderWithError(order, t.Errors.UNDELIVERABLE); }
 
     var amount = method.calculator(order);
-    t.trigger({ delivery: I({ name: method.name, amount: amount }) });
+    t.delivery = I({ name: method.name, amount: amount });
+    t.trigger({ delivery: t.delivery });
 
     return amount ?
       adjustOrder(order, method.name, amount).merge({ delivery: method.name }) :

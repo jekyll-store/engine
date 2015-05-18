@@ -5,6 +5,7 @@ var s = require('../../src/stores/DeliveryStore');
 var adjustOrder = require('../../src/services/adjustOrder');
 
 describe('DeliveryStore', function() {
+  var delivery, expected;
   var order = I({ totals: { order: 13.28 }, errors: [], adjustments: [] });
 
   before(function() {
@@ -17,38 +18,42 @@ describe('DeliveryStore', function() {
   });
 
   it('creates adjustment with first method by default', function() {
-    var delivery = I({ name: 'Standard', amount: 1.60 });
-    var expected = adjustOrder(order, 'Standard', 1.60).merge({ delivery: 'Standard' });
+    delivery = I({ name: 'Standard', amount: 1.60 });
+    expected = adjustOrder(order, 'Standard', 1.60).merge({ delivery: 'Standard' });
     assert.deepEqual(s.adjust(order), expected);
     assert.deepEqual(s.trigger.args[0][0], { delivery: delivery });
   });
 
   it('creates adjustment with specified method', function() {
     s.delivery = 'Express';
-    var delivery = I({ name: 'Express', amount: 3.40 });
-    var expected = adjustOrder(order, 'Express', 3.40).merge({ delivery: 'Express' });
+    delivery = I({ name: 'Express', amount: 3.40 });
+    expected = adjustOrder(order, 'Express', 3.40).merge({ delivery: 'Express' });
     assert.deepEqual(s.adjust(order), expected);
     assert.deepEqual(s.trigger.args[1][0], { delivery: delivery });
   });
 
+  it('returns previously set delivery with getInitialState', function() {
+    assert.deepEqual(s.getInitialState(), { delivery: delivery });
+  });
+
   it('raises error if selected method returns nothing', function() {
     s.delivery = 'Limited';
-    var delivery = I({ name: 'Limited', amount: undefined });
-    var expected = order.merge({ errors: [s.Errors.NOT_APPLICABLE] });
+    delivery = I({ name: 'Limited', amount: undefined });
+    expected = order.merge({ errors: [s.Errors.NOT_APPLICABLE] });
     assert.deepEqual(s.adjust(order), expected);
     assert.deepEqual(s.trigger.args[2][0], { delivery: delivery });
   });
 
   it('raises error if no methods available', function() {
     s.methods = I({});
-    var expected = order.merge({ errors: [s.Errors.UNDELIVERABLE] });
+    expected = order.merge({ errors: [s.Errors.UNDELIVERABLE] });
     assert.deepEqual(s.adjust(order), expected);
   });
 
   it('adds errors to previous', function() {
     order = order.merge({ errors: ['This item is a fashion disaster'] });
 
-    var expected = order.merge({
+    expected = order.merge({
       errors: ['This item is a fashion disaster', s.Errors.UNDELIVERABLE]
     });
 
