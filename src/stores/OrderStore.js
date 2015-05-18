@@ -23,7 +23,6 @@ var OrderStore = Reflux.createStore({
   },
 
   // Private
-  request: require('superagent'),
   completed: Actions.completed,
   update: function() { t.trigger({ order: t.order }); },
   intTotal: function() { return B(t.order.totals.order).times(100).toFixed(); },
@@ -63,5 +62,7 @@ var OrderStore = Reflux.createStore({
     return minBask;
   }
 });
+
+OrderStore.request = require('superagent');
 
 var t = module.exports = OrderStore;
