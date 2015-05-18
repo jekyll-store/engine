@@ -3,11 +3,10 @@ var Reflux = require('reflux');
 var I = require('seamless-immutable');
 var B = require('big.js');
 var listenAndMix = require('../mixins/listenAndMix');
-var Actions = require('../Actions');
 
 var OrderStore = Reflux.createStore({
   // Public
-  listenables: [Actions],
+  listenables: [require('../Actions')],
   mixins: [
     listenAndMix(require('./PaymentOptionsStore')),
     listenAndMix(require('./BasketStore')),
@@ -23,7 +22,6 @@ var OrderStore = Reflux.createStore({
   },
 
   // Private
-  completed: Actions.completed,
   update: function() { t.trigger({ order: t.order }); },
   intTotal: function() { return B(t.order.totals.order).times(100).toFixed(); },
 
@@ -64,5 +62,6 @@ var OrderStore = Reflux.createStore({
 });
 
 OrderStore.request = require('superagent');
+OrderStore.completed = require('../Actions').completed;
 
 var t = module.exports = OrderStore;

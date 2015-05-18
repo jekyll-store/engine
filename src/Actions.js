@@ -14,6 +14,10 @@ var Actions = Reflux.createActions([
   'refreshCheckout'
 ]);
 
+Actions.completed.preEmit = function(args) {
+  debugger;
+};
+
 Actions.setItem.shouldEmit = function(args) { return args.quantity >= 0; };
 
 Actions.loadProducts.shouldEmit = function(args) {
