@@ -4,7 +4,7 @@ exports.mapping = function(key, value) {
   var obj = {};
   obj[key] = value;
   return obj;
-}
+};
 
 exports.Session = {
   set: function(k, v) {
@@ -21,4 +21,4 @@ exports.intersects = function(arr1, arr2) {
     if(arr2.indexOf(arr1[i]) >= 0) { return true; }
   }
   return false;
-}
+};

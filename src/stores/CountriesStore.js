@@ -8,4 +8,4 @@ var CountriesStore = Reflux.createStore({
   onLoadCountries: function(args) { this.toLookUp('iso', args); }
 });
 
-var t = module.exports = CountriesStore;
+module.exports = CountriesStore;
