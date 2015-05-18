@@ -3,6 +3,7 @@ var Reflux = require('reflux');
 var listenAndMix = require('../mixins/listenAndMix');
 var keptInStorage = require('../mixins/keptInStorage');
 var m = require('../Utils').mapping;
+var B = require('big.js');
 
 var BasketStore = Reflux.createStore({
   // Public
@@ -19,7 +20,8 @@ var BasketStore = Reflux.createStore({
 
   onSetItem: function(args) {
     var item = t.basket[args.name] || t.products[args.name];
-    item = item.merge({ quantity: args.quantity });
+    var subtotal = +B(item.price).times(args.quantity);
+    item = item.merge({ quantity: args.quantity, subtotal: subtotal });
     t.basket = t.basket.merge(m(args.name, item));
     t.update();
   },

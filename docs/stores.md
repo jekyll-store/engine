@@ -25,8 +25,8 @@ Example output:
 ```javascript
 {
   basket: Immutable({
-    'bag': { name: 'bag', price: 2.45, quantity: 3 },
-    'shoe': { name: 'shoe', price: 14.89, quantity: 1 }
+    'bag': { name: 'bag', price: 2.45, quantity: 3, subtotal: 7.35 },
+    'shoe': { name: 'shoe', price: 14.89, quantity: 1, subtotal: 14.89 }
   })
 }
 ```
