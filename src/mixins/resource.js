@@ -10,10 +10,14 @@ function resource(resName) {
 
     // Protected
     toLookUp: function(primaryKey, args) {
+      var lookUp = {};
+
       for(var i = 0; i < args[resName].length; i++) {
         var el = args[resName][i];
-        this[resName] = this[resName].merge(m(el[primaryKey], el));
+        lookUp[el[primaryKey]] = el;
       }
+
+      this[resName] = I(lookUp);
       this.trigger(m(resName, this[resName]));
     }
   };
