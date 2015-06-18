@@ -1,7 +1,7 @@
 {
   "name": "jekyll-store-engine",
   "main": "./src/JekyllStoreEngine.js",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Static ecommerce business logic written with Reflux.js",
   "repository": {
     "type": "git",
