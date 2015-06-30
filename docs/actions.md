@@ -91,7 +91,7 @@ Args:
 Example:
 
 ```javascript
-JekyllStoreEngine.Actions.loadProducts({
+JekyllStoreEngine.Actions.loadCountries({
   countries: [
     { iso: 'KH', name: 'Cambodia', zones: ['Shipping']  },
     { iso: 'AT', name: 'Austria', zones: ['Shipping'] },
