@@ -11,7 +11,8 @@ var Actions = Reflux.createActions([
   'setPaymentOptions',
   'purchase',
   'completed',
-  'refreshCheckout'
+  'refreshCheckout',
+  'setErrors'
 ]);
 
 Actions.setItem.shouldEmit = function(args) { return args.quantity >= 0; };

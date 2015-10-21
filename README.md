@@ -19,6 +19,7 @@ As with all [Flux](https://github.com/facebook/flux) architectures, interaction 
 * `purchase` - Processes order.
 * `completed` - Called when payment has been successully processed.
 * `refreshCheckout` - (Used internally).
+* `setErrors` - Can be used to set errors manually. 
 
 For more information, consult the [Actions reference page](/docs/actions.md).
 

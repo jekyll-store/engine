@@ -27,8 +27,16 @@ var OrderStore = Reflux.createStore({
       .post(t.paymentOptions.hook)
       .send(payload)
       .end(function(err, response) {
-        err ? t.updateWithError(err) : t.completed(response.body);
+        if(err) {
+          t.onSetErrors({ errors: [t.parseError(err)] });
+        } else {
+          t.completed(response.body);
+        }
       });
+  },
+  onSetErrors: function(args) {
+    t.order = t.order.merge({ errors: args.errors });
+    t.update();
   },
 
   // Private
@@ -38,10 +46,6 @@ var OrderStore = Reflux.createStore({
     var minBask = {};
     for(var name in t.basket) { minBask[name] = t.basket[name].quantity; }
     return minBask;
-  },
-
-  updateWithError: function(error) {
-    t.trigger({ order: t.order.merge({ errors: [t.parseError(error)] }) });
   },
 
   parseError: function(error) {

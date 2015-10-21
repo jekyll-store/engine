@@ -179,3 +179,19 @@ Called when payment has been successully processed. Triggers BasketStore to clea
 ## refreshCheckout
 
 Used internally to allow adjustors to call for checkout adjustments to be recalculated.
+
+## setErrors
+
+Can be used to set errors manually.
+
+Args:
+
+* `errors`
+
+Example:
+
+```javascript
+JekyllStoreEngine.Actions.setErrors({
+  errors: ['Card code is not recognized']
+});
+```
