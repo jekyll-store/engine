@@ -4,6 +4,5 @@ module.exports = {
   Mixins:      require('./mixins/Mixins'),
   Services:    require('./services/Services'),
   Stores:      require('./stores/Stores'),
-  Tokenizers:  require('./tokenizers/Tokenizers'),
   Utils:       require('./Utils')
 };

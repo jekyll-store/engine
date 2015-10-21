@@ -13,51 +13,39 @@ var OrderStore = Reflux.createStore({
     listenAndMix(require('./CheckoutStore'), 'update')
   ],
   getInitialState: function() { return { order: t.order }; },
-  onPurchase: function(form) {
+  onPurchase: function(payload) {
     if(t.order.errors.length > 0) { return; }
-    form = I(form);
-    t.paymentOptions.tokenizer(form.card, t.intTotal(), function(error, token) {
-      error ? t.updateWithError(error) : t.triggerPurchaseHook(form, token);
+
+    payload = I(payload).merge({
+      basket: t.minimalBasket(),
+      delivery: t.order.delivery,
+      currency: t.paymentOptions.currency,
+      total: t.order.totals.order
     });
+
+    t.request
+      .post(t.paymentOptions.hook)
+      .send(payload)
+      .end(function(err, response) {
+        err ? t.updateWithError(err) : t.completed(response.body);
+      });
   },
 
   // Private
   update: function() { t.trigger({ order: t.order }); },
-  intTotal: function() { return B(t.order.totals.order).times(100).toFixed(); },
-
-  triggerPurchaseHook: function(form, token) {
-    t.request
-      .post(t.paymentOptions.hook)
-      .send(t.payload(form, token))
-      .end(function(error, response) {
-        error ? t.updateWithError(t.parseError(error)) : t.completed(response.body);
-      });
-  },
-
-  parseError: function(error) {
-    return error.response && error.response.body && error.response.body.message;
-  },
-
-  updateWithError: function(error) {
-    t.trigger({ order: t.order.merge({ errors: [error] }) });
-  },
-
-  payload: function(form, token) {
-    return {
-      basket: t.minimalBasket(),
-      customer: form.customer,
-      address: form.address,
-      delivery: t.order.delivery,
-      token: token,
-      currency: t.paymentOptions.currency,
-      total: t.order.totals.order
-    };
-  },
 
   minimalBasket: function() {
     var minBask = {};
     for(var name in t.basket) { minBask[name] = t.basket[name].quantity; }
     return minBask;
+  },
+
+  updateWithError: function(error) {
+    t.trigger({ order: t.order.merge({ errors: [t.parseError(error)] }) });
+  },
+
+  parseError: function(error) {
+    return error.response && error.response.body && error.response.body.message;
   }
 });
 

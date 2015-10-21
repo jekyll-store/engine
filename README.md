@@ -48,12 +48,6 @@ Calculators are simple functions that take an order and return a number, usually
 
 For more information, consult the [Calculators reference page](/docs/calculators.md).
 
-## Tokenizers
-
-Tokenizers are interfaces with payment gateway providers, that use their API's to swap dangerous card details for a safe token that represents those cards. Not all payment gateways provide these API's. The following is a list of currently implemented tokenizers:
-
-* [Paymill](https://www.paymill.com/)
-
 ## Plugins
 
 The following plugins are made to be used with Jekyll-Store Engine:

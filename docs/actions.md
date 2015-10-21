@@ -135,7 +135,6 @@ Sets the payment options.
 
 Args:
 
-* `tokenizer` - The name of a tokenizer function associated with Payment Gateway.
 * `currency` - [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code.
 * `hook` - url for service to process order with card token
 
@@ -143,7 +142,6 @@ Example:
 
 ```javascript
 JekyllStoreEngine.Actions.setPaymentOptions({
-  tokenizer: 'Paymill',
   currency: 'USD',
   hook: 'http://my-payments-microserver.com/purchase'
 });
@@ -151,17 +149,15 @@ JekyllStoreEngine.Actions.setPaymentOptions({
 
 ## purchase
 
-Processes order.
-
-Args:
-
-* `address`: Customers full address with country as iso.
-* `card`: Card details to be tokenized.
+Processes order. All arguments are sent as part of the payload to the payment
+URL hook, along with a summary of the baskets contents, the delivery method,
+the cuurency and the order total.
 
 Example:
 
 ```javascript
 JekyllStoreEngine.Actions.purchase({
+  token: 'BE4653EB4EJJH97',
   cutomer: {
     name: 'Frank Abagnale',
     email: 'frankieSaysChilax@example.com'
@@ -172,13 +168,6 @@ JekyllStoreEngine.Actions.purchase({
     state: 'New York',
     country: 'US',
     zipcode: 'MN 55416'
-  },
-  card: {
-    number: '5500000000000004',
-    name: 'Mr F Abagnale',
-    month: '02',
-    year: '2022',
-    cvc: '341'
   }
 });
 ```

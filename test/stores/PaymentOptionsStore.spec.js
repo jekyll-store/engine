@@ -4,16 +4,10 @@ var I = require('seamless-immutable');
 var s = require('../../src/stores/PaymentOptionsStore');
 
 describe('PaymentOptionsStore', function() {
-  var input = { tokenizer: 'Paymill', currency: 'GBP', hook: 'www.payments.io/' };
-  var expected = I(input).merge({ tokenizer: 'Paymill: GBP' });
-
-  before(function() {
+  it('triggers options', function() {
+    var input = { currency: 'GBP', hook: 'www.payments.io/' };
     s.trigger = sinon.spy();
-    s.tokenizers.Paymill = function(args) { return 'Paymill: ' + args.currency; };
-  });
-
-  it('creates tokenizers', function() {
     s.onSetPaymentOptions(input);
-    assert.deepEqual(s.trigger.args[0][0], { paymentOptions: expected });
+    assert.deepEqual(s.trigger.args[0][0], { paymentOptions: I(input) });
   });
 });

@@ -100,7 +100,6 @@ Example output:
 ```javascript
 {
   paymentOptions: Immutable({
-    tokenizer: [function],
     currency: 'USD',
     hook: 'http://my-payments-server.com/purchase'
   })
