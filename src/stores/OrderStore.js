@@ -35,8 +35,9 @@ var OrderStore = Reflux.createStore({
       });
   },
   onSetErrors: function(args) {
-    t.order = t.order.merge({ errors: args.errors });
-    t.update();
+    var order = t.order.merge({ errors: args.errors });
+    if(args.mutate) { t.order = order; }
+    t.trigger({ order: order });
   },
 
   // Private

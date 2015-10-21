@@ -187,11 +187,13 @@ Can be used to set errors manually.
 Args:
 
 * `errors`
+* `mutate` - Set to true to keep the errors until manually removed.
 
 Example:
 
 ```javascript
 JekyllStoreEngine.Actions.setErrors({
-  errors: ['Card code is not recognized']
+  errors: ['Card code is not recognized'],
+  mutate: false
 });
 ```
